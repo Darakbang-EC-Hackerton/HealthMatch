@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 @RequiredArgsConstructor
 public class HealthProfileRepository {
-    private EntityManager em;
+    private final EntityManager em;
 
     public void save(HealthProfile healthProfile) {
         if (healthProfile.getId() == null) {

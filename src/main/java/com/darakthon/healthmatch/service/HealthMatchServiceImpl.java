@@ -1,8 +1,9 @@
 package com.darakthon.healthmatch.service;
 
-import com.darakthon.healthmatch.domain.Factor;
 import com.darakthon.healthmatch.domain.HealthMatchResult;
 import com.darakthon.healthmatch.domain.HealthProfile;
+import com.darakthon.healthmatch.domain.LosingFactor;
+import com.darakthon.healthmatch.domain.WinningFactor;
 import com.darakthon.healthmatch.repository.HealthMatchResultRepository;
 import com.darakthon.healthmatch.repository.HealthProfileRepository;
 import java.util.ArrayList;
@@ -24,38 +25,46 @@ public class HealthMatchServiceImpl implements HealthMatchService {
         HealthProfile inviteeProfile = healthProfileRepository.findById(inviteeId).get();
 
         HealthMatchResult matchResult = new HealthMatchResult();
-        List<Factor> losingFactors = new ArrayList<>();
-        List<Factor> winningFactors = new ArrayList<>();
+        List<LosingFactor> losingFactors = new ArrayList<>();
+        List<WinningFactor> winningFactors = new ArrayList<>();
 
         int invitorScore = 0;
         int inviteeScore = 0;
 
         if (invitorProfile.getExerciseCount() < inviteeProfile.getExerciseCount()) {
-            losingFactors.add(new Factor("exerciseCount"));
+            losingFactors.add(
+                    LosingFactor.builder().factorName("exerciseCount").losingHealthMatchResult(matchResult).build());
             invitorScore++;
         } else {
-            winningFactors.add(new Factor("exerciseCount"));
+            winningFactors.add(WinningFactor.builder().factorName("exerciseCount").build());
             inviteeScore++;
         }
-        if (invitorProfile.getWeight() > inviteeProfile.getWeight()) {
-            losingFactors.add(new Factor("weight"));
+        if (invitorProfile.getWeight() < inviteeProfile.getWeight()) {
+            losingFactors.add(LosingFactor.builder().factorName("weight").build());
             invitorScore++;
         } else {
-            winningFactors.add(new Factor("weight"));
+            winningFactors.add(WinningFactor.builder().factorName("weight").build());
             inviteeScore++;
         }
         if (invitorProfile.getHeight() < inviteeProfile.getHeight()) {
-            losingFactors.add(new Factor("height"));
+            losingFactors.add(LosingFactor.builder().factorName("height").build());
             invitorScore++;
         } else {
-            winningFactors.add(new Factor("height"));
+            winningFactors.add(WinningFactor.builder().factorName("height").build());
             inviteeScore++;
         }
-        if (invitorProfile.getSmokeCount() > inviteeProfile.getSmokeCount()) {
-            losingFactors.add(new Factor("smokeCount"));
+        if (invitorProfile.getSmokeCount() < inviteeProfile.getSmokeCount()) {
+            losingFactors.add(LosingFactor.builder().factorName("smokeCount").build());
             invitorScore++;
         } else {
-            winningFactors.add(new Factor("smokeCount"));
+            winningFactors.add(WinningFactor.builder().factorName("smokeCount").build());
+            inviteeScore++;
+        }
+        if (invitorProfile.getDrinkCount() < inviteeProfile.getDrinkCount()) {
+            losingFactors.add(LosingFactor.builder().factorName("drinkCount").build());
+            invitorScore++;
+        } else {
+            winningFactors.add(WinningFactor.builder().factorName("drinkCount").build());
             inviteeScore++;
         }
 
@@ -63,24 +72,26 @@ public class HealthMatchServiceImpl implements HealthMatchService {
             matchResult = HealthMatchResult.builder()
                     .winnerProfile(invitorProfile)
                     .loserProfile(inviteeProfile)
-                    .winningFactors(winningFactors)
-                    .losingFactors(losingFactors)
                     .build();
         } else {
             matchResult = HealthMatchResult.builder()
                     .winnerProfile(inviteeProfile)
                     .loserProfile(invitorProfile)
-                    .winningFactors(winningFactors)
-                    .losingFactors(losingFactors)
                     .build();
         }
-
-        winningFactors.forEach(matchResult::addWinningFactor);
-        losingFactors.forEach(matchResult::addLosingFactor);
 
         healthMatchResultRepository.save(matchResult);
         return matchResult.getId();
     }
 
+    @Override
+    public HealthMatchResult findHealthMatchById(Long matchId) {
+        return healthMatchResultRepository.findById(matchId).orElseThrow(() ->
+                new IllegalArgumentException("No match found with id: " + matchId));
+    }
 
+    @Override
+    public List<HealthMatchResult> getMatchHistory(Long profileId) {
+        return healthMatchResultRepository.findByProfileId(profileId);
+    }
 }
