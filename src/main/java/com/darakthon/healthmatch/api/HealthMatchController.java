@@ -86,7 +86,7 @@ public class HealthMatchController {
         List<MatchHistoryDTO> matchHistorys = matches.stream().map(match -> {
             boolean isWinner = match.getWinnerProfile().getId().equals(profileId);
             return MatchHistoryDTO.builder()
-                    .matchId("match_" + match.getId())
+                    .matchId(match.getId())
                     .result(isWinner ? "win" : "loss")
                     .matchDate(match.getCreatedDate())
                     .myName(isWinner ? match.getWinnerProfile().getName() : match.getLoserProfile().getName())

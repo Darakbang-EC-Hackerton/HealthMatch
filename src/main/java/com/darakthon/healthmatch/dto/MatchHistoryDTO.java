@@ -9,7 +9,7 @@ import lombok.Data;
 @Builder
 @AllArgsConstructor
 public class MatchHistoryDTO {
-    private String matchId;
+    private Long matchId;
     private String result;
     private LocalDateTime matchDate;
     private String myName;
