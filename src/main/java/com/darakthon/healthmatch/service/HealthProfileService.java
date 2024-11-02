@@ -1,40 +1,17 @@
 package com.darakthon.healthmatch.service;
 
 import com.darakthon.healthmatch.domain.HealthProfile;
-import com.darakthon.healthmatch.repository.HealthProfileRepository;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-@Service
-@Transactional(readOnly = true)
-@RequiredArgsConstructor
-public class HealthProfileService {
-    private final HealthProfileRepository healthProfileRepository;
+public interface HealthProfileService {
 
-    @Transactional
-    public Long save(HealthProfile healthProfile) {
-        healthProfileRepository.save(healthProfile);
-        return healthProfile.getId();
-    }
+    Long save(HealthProfile healthProfile);
 
-    public List<HealthProfile> findAll() {
-        return healthProfileRepository.findAll();
-    }
+    List<HealthProfile> findAll();
 
-    public HealthProfile findOne(Long id) {
-        return healthProfileRepository.findOne(id);
-    }
+    HealthProfile findOne(Long id);
 
-    @Transactional
-    public void delete(HealthProfile healthProfile) {
-        healthProfileRepository.delete(healthProfile);
-    }
+    void delete(HealthProfile healthProfile);
 
-    @Transactional
-    public void update(Long id, HealthProfile param) {
-        HealthProfile healthProfile = healthProfileRepository.findOne(id);
-        healthProfile.update(param.getName(), param.getWeight(), param.getHeight(), param.getExerciseCount());
-    }
+    void update(Long id, HealthProfile param);
 }
