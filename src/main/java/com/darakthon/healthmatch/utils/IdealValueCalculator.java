@@ -17,7 +17,6 @@ public class IdealValueCalculator {
     }
 
     public static String determineHealthGrade(double bmi, HealthProfile healthProfile) {
-        // Implement your logic to determine health grade based on BMI and other factors
         if (bmi < 18.5) {
             return "B";
         } else if (bmi < 25) {

@@ -39,7 +39,7 @@ public class HealthMatchServiceImpl implements HealthMatchService {
             winningFactors.add(WinningFactor.builder().factorName("exerciseCount").build());
             inviteeScore++;
         }
-        if (invitorProfile.getWeight() < inviteeProfile.getWeight()) {
+        if (invitorProfile.getWeight() > inviteeProfile.getWeight()) {
             losingFactors.add(LosingFactor.builder().factorName("weight").build());
             invitorScore++;
         } else {
@@ -53,14 +53,14 @@ public class HealthMatchServiceImpl implements HealthMatchService {
             winningFactors.add(WinningFactor.builder().factorName("height").build());
             inviteeScore++;
         }
-        if (invitorProfile.getSmokeCount() < inviteeProfile.getSmokeCount()) {
+        if (invitorProfile.getSmokeCount() > inviteeProfile.getSmokeCount()) {
             losingFactors.add(LosingFactor.builder().factorName("smokeCount").build());
             invitorScore++;
         } else {
             winningFactors.add(WinningFactor.builder().factorName("smokeCount").build());
             inviteeScore++;
         }
-        if (invitorProfile.getDrinkCount() < inviteeProfile.getDrinkCount()) {
+        if (invitorProfile.getDrinkCount() > inviteeProfile.getDrinkCount()) {
             losingFactors.add(LosingFactor.builder().factorName("drinkCount").build());
             invitorScore++;
         } else {
