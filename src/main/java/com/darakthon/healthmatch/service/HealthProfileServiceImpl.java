@@ -23,8 +23,9 @@ public class HealthProfileServiceImpl implements HealthProfileService {
         return healthProfileRepository.findAll();
     }
 
-    public HealthProfile findOne(Long id) {
-        return healthProfileRepository.findOne(id);
+    public HealthProfile findById(Long id) {
+        return healthProfileRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("HealthProfile not found with ID: " + id));
     }
 
     @Transactional
@@ -34,7 +35,8 @@ public class HealthProfileServiceImpl implements HealthProfileService {
 
     @Transactional
     public void update(Long id, HealthProfile param) {
-        HealthProfile healthProfile = healthProfileRepository.findOne(id);
-        healthProfile.update(param.getName(), param.getWeight(), param.getHeight(), param.getExerciseCount());
+        HealthProfile healthProfile = healthProfileRepository.findById(id).get();
+        healthProfile.updateProfile(param.getName(), param.getExerciseCount(), param.getWeight(), param.getHeight(),
+                param.getSmokeCount());
     }
 }

@@ -9,7 +9,7 @@ public interface HealthProfileService {
 
     List<HealthProfile> findAll();
 
-    HealthProfile findOne(Long id);
+    HealthProfile findById(Long id);
 
     void delete(HealthProfile healthProfile);
 

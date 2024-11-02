@@ -3,6 +3,7 @@ package com.darakthon.healthmatch.repository;
 import com.darakthon.healthmatch.domain.HealthProfile;
 import jakarta.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -19,8 +20,8 @@ public class HealthProfileRepository {
         }
     }
 
-    public HealthProfile findOne(Long id) {
-        return em.find(HealthProfile.class, id);
+    public Optional<HealthProfile> findById(Long id) {
+        return Optional.ofNullable(em.find(HealthProfile.class, id));
     }
 
     public List<HealthProfile> findAll() {
