@@ -9,11 +9,13 @@ import com.darakthon.healthmatch.dto.HealthProfileResponse;
 import com.darakthon.healthmatch.dto.IdealValuesDTO;
 import com.darakthon.healthmatch.service.HealthProfileService;
 import com.darakthon.healthmatch.utils.IdealValueCalculator;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,7 +31,8 @@ public class HealthProfileController {
     private final HealthProfileService healthProfileService;
 
     @PostMapping("/profiles")
-    public ResponseEntity<Map<String, Long>> postHealthProfile(@Valid @RequestBody HealthProfileRequest request) {
+    public ResponseEntity<Map<String, Long>> postHealthProfile(@Valid @RequestBody HealthProfileRequest request,
+                                                               HttpServletResponse response) {
         HealthProfile healthProfile = HealthProfile.builder().name(request.getName())
                 .exerciseCount(request.getExerciseCount())
                 .weight(request.getWeight())
@@ -39,8 +42,16 @@ public class HealthProfileController {
                 .build();
         Long id = healthProfileService.save(healthProfile);
         log.info("HealthProfile saved with ID: {}", id);
-        Map<String, Long> response = Map.of("inviteeId", id);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+
+        ResponseCookie cookie = ResponseCookie.from("healthProfileId", String.valueOf(id))
+                .path("/")
+                .maxAge(7 * 24 * 60 * 60)
+                .build();
+
+        response.addHeader("Set-Cookie", cookie.toString());
+
+        Map<String, Long> responseBody = Map.of("inviteeId", id);
+        return new ResponseEntity<>(responseBody, HttpStatus.CREATED);
     }
 
     @GetMapping("/profiles/{id}")
