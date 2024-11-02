@@ -25,20 +25,26 @@ public class HealthProfile extends BaseEntity {
 
     private Integer smokeCount;
 
+    private Integer drinkCount;
+
     @Builder
-    public HealthProfile(String name, Integer exerciseCount, Double weight, Double height, Integer smokeCount) {
+    public HealthProfile(String name, Integer exerciseCount, Double weight, Double height, Integer smokeCount,
+                         Integer drinkCount) {
         this.name = name;
         this.exerciseCount = exerciseCount;
         this.weight = weight;
         this.height = height;
         this.smokeCount = smokeCount;
+        this.drinkCount = drinkCount;
     }
 
-    public void updateProfile(String name, Integer exerciseCount, Double weight, Double height, Integer smokeCount) {
+    public void updateProfile(String name, Integer exerciseCount, Double weight, Double height, Integer smokeCount,
+                              Integer drinkCount) {
         this.name = name;
         this.exerciseCount = exerciseCount;
         this.weight = weight;
         this.height = height;
         this.smokeCount = smokeCount;
+        this.drinkCount = drinkCount;
     }
 }

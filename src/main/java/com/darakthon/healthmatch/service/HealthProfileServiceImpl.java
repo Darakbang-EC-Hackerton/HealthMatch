@@ -37,6 +37,6 @@ public class HealthProfileServiceImpl implements HealthProfileService {
     public void update(Long id, HealthProfile param) {
         HealthProfile healthProfile = healthProfileRepository.findById(id).get();
         healthProfile.updateProfile(param.getName(), param.getExerciseCount(), param.getWeight(), param.getHeight(),
-                param.getSmokeCount());
+                param.getSmokeCount(), param.getDrinkCount());
     }
 }
