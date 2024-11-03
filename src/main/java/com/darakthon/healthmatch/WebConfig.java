@@ -15,6 +15,8 @@ public class WebConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedOrigins("https://port-0-healthmatch1-m30h6ofzaa0b4434.sel4.cloudtype.app",
+                                "https://binaryduofront.vercel.app:3000",
+                                "https://binaryduofront.vercel.app",
                                 "http://localhost:3000")
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
                         .allowedHeaders("*")
